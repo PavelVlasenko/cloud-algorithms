@@ -1,7 +1,11 @@
 package cloud.algorithms.cloud;
 
-/**
- * Created by SBT-Vlasenko-PV on 02.02.2017.
- */
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 public class Cloud {
+
+    public ExecutorService executor = Executors.newSingleThreadExecutor();
+
+
 }

@@ -1,13 +1,9 @@
 package cloud.algorithms.app;
 
-import cloud.algorithms.cloud.CloudManager;
+import cloud.algorithms.settings.Algorithm;
 import cloud.algorithms.cloud.CloudScheduler;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.parsing.ParseState;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Component;
 
-import java.util.List;
 import java.util.Map;
 
 public class AppScheduler {
@@ -42,10 +38,8 @@ public class AppScheduler {
                         e.printStackTrace();
                     }
                 }
-
-
+                cloudScheduler.getTasks().add(task);
             }
-
         }
         System.out.println("Application is finished");
     }
