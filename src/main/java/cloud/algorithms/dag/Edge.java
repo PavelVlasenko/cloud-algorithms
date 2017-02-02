@@ -1,4 +1,4 @@
-package cloud.algorithms.app;
+package cloud.algorithms.dag;
 
 public class Edge
 {
