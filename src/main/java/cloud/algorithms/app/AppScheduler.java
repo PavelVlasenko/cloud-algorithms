@@ -1,13 +1,12 @@
 package cloud.algorithms.app;
 
-import cloud.algorithms.cloud.CloudScheduler;
-import org.springframework.scheduling.annotation.Async;
+import cloud.algorithms.cloud.TaskScheduler;
 
 import java.util.Map;
 
 public class AppScheduler {
 
-    CloudScheduler cloudScheduler;
+    TaskScheduler cloudScheduler;
 
     Map<Long, App> appShedule;
 
