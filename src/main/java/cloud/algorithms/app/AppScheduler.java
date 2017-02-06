@@ -1,6 +1,5 @@
 package cloud.algorithms.app;
 
-import cloud.algorithms.settings.Algorithm;
 import cloud.algorithms.cloud.CloudScheduler;
 import org.springframework.scheduling.annotation.Async;
 
@@ -17,7 +16,7 @@ public class AppScheduler {
         for(Map.Entry<Long, App> entry : appShedule.entrySet()) {
             try {
                 Thread.sleep(entry.getKey());
-                sendTasksToCloudScheduler(entry.getValue());
+                cloudScheduler.processApp(entry.getValue());
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -25,23 +24,23 @@ public class AppScheduler {
         System.out.println("Finish application scheduler");
     }
 
-    @Async
-    public void sendTasksToCloudScheduler(App app) {
-        System.out.println("Start application");
-        if(app.getType() == AppType.BEST_EFFORT) {
-            while(!app.tasks.isEmpty()) {
-                Task task = app.tasks.poll();
-                while(!task.predecessors.isEmpty()) {
-                    try {
-                        Thread.sleep(500);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-                cloudScheduler.getTasks().add(task);
-            }
-        }
-        System.out.println("Application is finished");
-    }
+//    @Async
+//    public void sendTasksToCloudScheduler(App app) {
+//        System.out.println("Start application");
+//        if(app.getType() == AppType.BEST_EFFORT) {
+//            while(!app.tasks.isEmpty()) {
+//                Task task = app.tasks.poll();
+//                while(!task.predecessors.isEmpty()) {
+//                    try {
+//                        Thread.sleep(500);
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//                cloudScheduler.getTasks().add(task);
+//            }
+//        }
+//        System.out.println("Application is finished");
+//    }
 
 }

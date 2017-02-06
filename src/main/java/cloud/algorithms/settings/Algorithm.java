@@ -2,8 +2,8 @@ package cloud.algorithms.settings;
 
 public enum Algorithm {
     FCFS,
-    CLS,
-    FCLS,
-    CMMS,
+    DLS,
+    FDLS,
+    DMMS,
     FCMMS
 }
