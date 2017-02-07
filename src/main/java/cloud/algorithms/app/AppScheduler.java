@@ -2,19 +2,21 @@ package cloud.algorithms.app;
 
 import cloud.algorithms.cloud.TaskScheduler;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class AppScheduler {
 
-    TaskScheduler taskScheduler;
+    private TaskScheduler taskScheduler;
 
-    Map<Long, App> appShedule;
+    private List<App> appList = new ArrayList<App>();
 
     public void startAppScheduler() {
         System.out.println("Start application scheduler");
-        for(Map.Entry<Long, App> entry : appShedule.entrySet()) {
+        for(App app : appList) {
             try {
-                Thread.sleep(entry.getKey());
+                Thread.sleep(app.getArrivalTime());
                 taskScheduler.processApp(entry.getValue());
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -23,4 +25,11 @@ public class AppScheduler {
         System.out.println("Finish application scheduler");
     }
 
+    public List<App> getAppList() {
+        return appList;
+    }
+
+    public void setAppList(List<App> appList) {
+        this.appList = appList;
+    }
 }

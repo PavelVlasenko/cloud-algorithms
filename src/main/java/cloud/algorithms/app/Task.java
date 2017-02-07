@@ -1,7 +1,7 @@
 package cloud.algorithms.app;
 
 import cloud.algorithms.cloud.Cloud;
-import cloud.algorithms.settings.Config;
+import cloud.algorithms.utils.Config;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -30,8 +30,6 @@ public class Task implements Runnable {
         setFinished(true);
         getCloud().setFeedbackFactor((System.currentTimeMillis() - startTime)/executionTime);
     }
-
-    private processTask()
 
     public int getTaskId() {
         return taskId;

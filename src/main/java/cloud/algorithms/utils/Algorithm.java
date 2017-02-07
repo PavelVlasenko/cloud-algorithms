@@ -1,4 +1,4 @@
-package cloud.algorithms.settings;
+package cloud.algorithms.utils;
 
 public enum Algorithm {
     FCFS,

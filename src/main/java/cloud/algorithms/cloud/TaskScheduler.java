@@ -2,7 +2,7 @@ package cloud.algorithms.cloud;
 
 import cloud.algorithms.app.App;
 import cloud.algorithms.app.Task;
-import cloud.algorithms.settings.Config;
+import cloud.algorithms.utils.Config;
 import org.springframework.scheduling.annotation.Async;
 
 public class TaskScheduler {
@@ -11,8 +11,8 @@ public class TaskScheduler {
 
     @Async
     public void processApp(App app) {
-        while(!app.tasks.isEmpty()) {
-            Task task = app.tasks.poll();
+        while(!app.getTasks().isEmpty()) {
+            Task task = app.getTasks().poll();
             distributeTask(task);
         }
         System.out.println("App is finished");

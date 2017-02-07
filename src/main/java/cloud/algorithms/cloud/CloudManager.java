@@ -2,7 +2,7 @@ package cloud.algorithms.cloud;
 
 import cloud.algorithms.app.AppType;
 import cloud.algorithms.app.Task;
-import cloud.algorithms.settings.Config;
+import cloud.algorithms.utils.Config;
 import com.google.common.collect.Table;
 
 import java.util.LinkedList;
