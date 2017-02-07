@@ -8,4 +8,5 @@ public class Config {
 
     public static long minTimeUnit = 500;
     public static int finishedAppCount;
+    public static boolean isFinished;
 }

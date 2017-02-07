@@ -2,7 +2,6 @@ package cloud.algorithms.cloud;
 
 import cloud.algorithms.app.App;
 import cloud.algorithms.app.Task;
-import cloud.algorithms.settings.Algorithm;
 import cloud.algorithms.settings.Config;
 import org.springframework.scheduling.annotation.Async;
 
@@ -20,19 +19,20 @@ public class TaskScheduler {
         Config.finishedAppCount++;
     }
 
-    private void distributeTask(Task t) {
-        if(checkPredeccorIsFinished(t)) {
-            cloudManager.addTask();
+    private void distributeTask(Task task) {
+        if(checkPredecessorsIsFinished(task)) {
+            cloudManager.addTask(task);
+            return;
         }
         try {
             Thread.sleep(Config.minTimeUnit);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        distributeTask(t);
+        distributeTask(task);
     }
 
-    private boolean checkPredeccorIsFinished(Task task) {
+    private boolean checkPredecessorsIsFinished(Task task) {
         return true;
     }
 }
