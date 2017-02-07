@@ -4,7 +4,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public class App {
-    private Queue<Task> tasks = new LinkedList<Task>();
+    private LinkedList<Task> tasks = new LinkedList<Task>();
     private long arrivalTime;
     private AppType type;
 
@@ -16,11 +16,11 @@ public class App {
         this.type = type;
     }
 
-    public Queue<Task> getTasks() {
+    public LinkedList<Task> getTasks() {
         return tasks;
     }
 
-    public void setTasks(Queue<Task> tasks) {
+    public void setTasks(LinkedList<Task> tasks) {
         this.tasks = tasks;
     }
 

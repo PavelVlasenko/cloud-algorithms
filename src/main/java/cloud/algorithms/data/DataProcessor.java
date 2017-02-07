@@ -4,6 +4,9 @@ import cloud.algorithms.app.App;
 import cloud.algorithms.app.AppScheduler;
 import cloud.algorithms.app.AppType;
 import cloud.algorithms.app.Task;
+import cloud.algorithms.dag.Dag;
+import cloud.algorithms.dag.DagGenerator;
+import cloud.algorithms.dag.DagProcessor;
 import cloud.algorithms.utils.Config;
 import cloud.algorithms.utils.Logger;
 import org.apache.commons.lang3.StringUtils;
@@ -82,7 +85,17 @@ public class DataProcessor {
         }
         Logger.info("=== Merge dag with application");
 
+        DagGenerator dagGenerator = new DagGenerator();
+
         for(App app : apps) {
+            Dag dag = dagGenerator.createDag(Config.taskNumb);
+            for(int i=0; i<app.getTasks().size(); i++) {
+                dag.vertices.get(i).averageExecutionTime = app.getTasks().get(i).getExecutionTime()
+            }
+            DagProcessor dagProcessor = new DagProcessor(dag);
+            dagProcessor.calculateEST();
+            dagProcessor.calculateLST();
+            dagProcessor.calculateTaskList();
 
         }
 

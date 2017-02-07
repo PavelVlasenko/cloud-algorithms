@@ -10,4 +10,6 @@ public class Config {
     public static int finishedAppCount;
     public static boolean isFinished;
     public static LogLevel logLevel = LogLevel.DEBUG;
+
+    public static int taskNumb = 64;
 }

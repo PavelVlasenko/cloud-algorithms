@@ -4,8 +4,10 @@ import java.util.*;
 
 public class Dag
 {
-    public Set<Vertex> vertices = new HashSet<Vertex>();
-    public Set<Edge> edges = new HashSet<Edge>();
+    public List<Vertex> vertices = new ArrayList<Vertex>();
+    public List<Edge> edges = new ArrayList<Edge>();
+
+    public List<Vertex> taskList;
 
     public void showDag() {
         System.out.println("==================== Vertices   ================");
@@ -20,5 +22,17 @@ public class Dag
        {
            System.out.println(edge);
        }
+    }
+
+    public Vertex getVertexByIndex(int index)
+    {
+        for(Vertex v : vertices)
+        {
+            if(v.index == index)
+            {
+                return v;
+            }
+        }
+        return null;
     }
 }

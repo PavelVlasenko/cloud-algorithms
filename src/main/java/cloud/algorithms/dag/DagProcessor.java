@@ -1,17 +1,11 @@
-package cloud.algorithms.app;
+package cloud.algorithms.dag;
 
-import cloud.algorithms.dag.Dag;
-import cloud.algorithms.dag.Edge;
-import cloud.algorithms.dag.Vertex;
+import java.util.*;
 
-import java.util.Set;
-
-public class AppProcessor
+public class DagProcessor
 {
     private Dag dag;
     private Set<Vertex> entryVertices;
-    double wBar;
-    double sf = 1; //change this value for other scenario
 
     public DagProcessor(Dag dag) {
         this.dag = dag;
@@ -20,7 +14,7 @@ public class AppProcessor
     private Set<Vertex> findEntryVertex()
     {
         //find V entry
-        Set<Vertex> entryVertices = new HashSet<>();
+        Set<Vertex> entryVertices = new HashSet<Vertex>();
         for(Vertex vertex : dag.vertices)
         {
             boolean hasPredecessors = false;
@@ -44,9 +38,9 @@ public class AppProcessor
 
     public void calculateEST()
     {
-        Set<Vertex> procesedVertices = new HashSet<>(dag.vertices);
+        Set<Vertex> procesedVertices = new HashSet<Vertex>(dag.vertices);
         Set<Vertex> currentVertices = findEntryVertex();
-        Set<Vertex> bufferVertices = new HashSet<>();
+        Set<Vertex> bufferVertices = new HashSet<Vertex>();
 
         //set EST for entry vertices and remove from processedVertices
         for(Vertex v : currentVertices)
@@ -85,9 +79,9 @@ public class AppProcessor
 
     public void calculateLST()
     {
-        Set<Vertex> procesedVertices = new HashSet<>(dag.vertices);
+        Set<Vertex> procesedVertices = new HashSet<Vertex>(dag.vertices);
         Set<Vertex> currentVertices = findEndVertex();
-        Set<Vertex> bufferVertices = new HashSet<>();
+        Set<Vertex> bufferVertices = new HashSet<Vertex>();
 
         //set LST for enf vertices and remove from processedVertices
         for(Vertex v : currentVertices)
@@ -127,7 +121,7 @@ public class AppProcessor
     private Set<Vertex> findEndVertex()
     {
         //find V entry
-        Set<Vertex> endVertices = new HashSet<>();
+        Set<Vertex> endVertices = new HashSet<Vertex>();
         for(Vertex vertex : dag.vertices)
         {
             boolean hasSuccessors = false;
@@ -149,7 +143,7 @@ public class AppProcessor
 
     private Set<Vertex> findPredecessors(Set<Vertex> current)
     {
-        Set<Vertex> predecessors = new HashSet<>();
+        Set<Vertex> predecessors = new HashSet<Vertex>();
         for(Vertex v : current)
         {
             for(Edge e : dag.edges)
@@ -165,7 +159,7 @@ public class AppProcessor
 
     private Set<Vertex> findSuccessors(Set<Vertex> current)
     {
-        Set<Vertex> successors = new HashSet<>();
+        Set<Vertex> successors = new HashSet<Vertex>();
         for(Vertex v : current)
         {
             for(Edge e : dag.edges)
@@ -227,7 +221,7 @@ public class AppProcessor
 
     private Set<Vertex> findPredecessors(Vertex v)
     {
-        Set<Vertex> predecessors = new HashSet<>();
+        Set<Vertex> predecessors = new HashSet<Vertex>();
         for(Edge e : dag.edges)
         {
             if(e.endVertex == v.index)
@@ -240,7 +234,7 @@ public class AppProcessor
 
     private Set<Vertex> findSuccessors(Vertex v)
     {
-        Set<Vertex> successors = new HashSet<>();
+        Set<Vertex> successors = new HashSet<Vertex>();
         for(Edge e : dag.edges)
         {
             if(e.startVertex == v.index)
@@ -253,8 +247,8 @@ public class AppProcessor
 
     public void calculateTaskList()
     {
-        List<Vertex> resultTaskList = new ArrayList<>();
-        LinkedList<Vertex> stackS = new LinkedList<>();
+        List<Vertex> resultTaskList = new ArrayList<Vertex>();
+        LinkedList<Vertex> stackS = new LinkedList<Vertex>();
 
         //Identify the most critical path nodes CN based on  value EST& LST = equal or 0
         for(Vertex v : dag.vertices)
@@ -272,7 +266,7 @@ public class AppProcessor
         {
             Vertex vertex = stackS.peek();
             Set<Vertex> predecessors = findPredecessors(vertex);
-            Set<Vertex> unstackedPredecessors = new HashSet<>();
+            Set<Vertex> unstackedPredecessors = new HashSet<Vertex>();
 
             for(Vertex v : predecessors)
             {
