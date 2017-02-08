@@ -10,6 +10,8 @@ public class Cloud {
 
     private ExecutorService executor = Executors.newSingleThreadExecutor();
     private LinkedList<Task> arTasks;
+    private LinkedList<Task> beTasks;
+
     private Integer EAT = new Integer(0);
     private double feedbackFactor;
 
