@@ -31,4 +31,13 @@ public class App {
     public void setArrivalTime(long arrivalTime) {
         this.arrivalTime = arrivalTime;
     }
+
+    public Task getTaskById(int id) {
+        for(Task t : tasks) {
+            if(t.getTaskId() == id) {
+                return t;
+            }
+        }
+        return null;
+    }
 }

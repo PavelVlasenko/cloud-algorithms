@@ -70,4 +70,12 @@ public class Task implements Runnable {
     public void setExecutionTime(int executionTime) {
         this.executionTime = executionTime;
     }
+
+    public Set<Task> getPredecessors() {
+        return predecessors;
+    }
+
+    public Set<Task> getSuccessors() {
+        return successors;
+    }
 }

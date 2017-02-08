@@ -3,14 +3,16 @@ package cloud.algorithms.cloud;
 import cloud.algorithms.app.App;
 import cloud.algorithms.app.Task;
 import cloud.algorithms.utils.Config;
+import cloud.algorithms.utils.Logger;
 import org.springframework.scheduling.annotation.Async;
 
 public class TaskScheduler {
 
-    CloudManager cloudManager;
+    private CloudManager cloudManager = new CloudManager();
 
     @Async
     public void processApp(App app) {
+        Logger.debug("==Task scheduler receive app");
         while(!app.getTasks().isEmpty()) {
             Task task = app.getTasks().poll();
             distributeTask(task);
@@ -33,6 +35,15 @@ public class TaskScheduler {
     }
 
     private boolean checkPredecessorsIsFinished(Task task) {
+        for(Task t : task.getPredecessors()) {
+            if(!t.isFinished()) {
+                return false;
+            }
+        }
         return true;
+    }
+
+    public CloudManager getCloudManager() {
+        return cloudManager;
     }
 }
