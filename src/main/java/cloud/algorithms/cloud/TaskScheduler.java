@@ -22,7 +22,7 @@ public class TaskScheduler {
             distributeTask(task);
         }
         System.out.println("*** App is finished");
-        Config.finishedAppCount++;
+        //Config.finishedAppCount++;
     }
 
     private void distributeTask(Task task) {
@@ -31,7 +31,7 @@ public class TaskScheduler {
             return;
         }
         try {
-            Logger.trace("Task " + task.getTaskId() + " predecessors not finished");
+            //Logger.trace("= Task " + task.getTaskId() + " predecessors not finished");
             Thread.sleep(Config.minTimeUnit);
         } catch (InterruptedException e) {
             e.printStackTrace();

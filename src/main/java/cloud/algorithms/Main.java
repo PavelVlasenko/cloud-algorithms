@@ -20,16 +20,5 @@ public class Main {
         Starter starter = (Starter)SpringContext.appContext.getBean("starter");
         starter.start();
         Integer i = 9;
-
-//        DataProcessor dp = new DataProcessor();
-//        List<App> appList = dp.processFile("C:\\Users\\SBT-Vlasenko-PV\\Desktop\\test\\LLNL-Atlas-2006-0.txt");
-//
-//        AppScheduler appScheduler = new AppScheduler();
-//        TaskScheduler taskScheduler = appScheduler.getTaskScheduler();
-//        CloudManager cloudManager = taskScheduler.getCloudManager();
-//        cloudManager.runCloud();
-//
-//        appScheduler.setAppList(appList);
-//        appScheduler.startAppScheduler();
     }
 }

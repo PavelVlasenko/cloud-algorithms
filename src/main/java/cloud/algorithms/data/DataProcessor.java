@@ -53,8 +53,8 @@ public class DataProcessor {
                         app.setArrivalTime(startDate.getTime());
                     }
                     Date endDate = sd.parse(endTime);
-                    long executionTime = endDate.getTime() - startDate.getTime();
-                    if(executionTime < 0) {
+                    long executionTime = (endDate.getTime() - startDate.getTime())/Config.timeDelimeter;
+                    if(executionTime <= 0) {
                         continue;
                     }
                     task.setExecutionTime((int)executionTime);
@@ -64,7 +64,7 @@ public class DataProcessor {
                 task.setTaskId(Integer.valueOf(jobId));
                 app.getTasks().add(task);
                 count++;
-                if(count == 64) {
+                if(count == Config.taskNumb) {
                     apps.add(app);
                     app = new App();
                     count = 0;
@@ -99,7 +99,7 @@ public class DataProcessor {
         Logger.info("=== Set application arrival time");
         long firstArrivalTime = apps.get(0).getArrivalTime();
         for(App app : apps) {
-            app.setArrivalTime(app.getArrivalTime() - firstArrivalTime);
+            app.setArrivalTime((app.getArrivalTime() - firstArrivalTime)/Config.timeDelimeter);
         }
         Logger.info("=== Merge dag with application");
 
@@ -147,12 +147,12 @@ public class DataProcessor {
         Cloud cloud3 = (Cloud)SpringContext.appContext.getBean("cloud");
 
         cloud1.setCloudId(1);
-        cloud1.setCloudId(2);
-        cloud1.setCloudId(3);
+        cloud2.setCloudId(2);
+        cloud3.setCloudId(3);
 
         cloud1.runCloud();
-        cloud1.runCloud();
-        cloud1.runCloud();
+        cloud2.runCloud();
+        cloud3.runCloud();
 
         Table<Integer, Cloud, Integer> etm = CloudManager.ETM;
         for(App app :apps) {

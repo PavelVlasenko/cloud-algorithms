@@ -19,7 +19,7 @@ public class AppScheduler {
     private List<App> appList = new ArrayList<App>();
 
     public void startAppScheduler() {
-        Logger.info("Start application scheduler");
+        Logger.info("=== Start application scheduler");
         for(App app : appList) {
             try {
                 Thread.sleep(app.getArrivalTime());
@@ -28,14 +28,16 @@ public class AppScheduler {
                 e.printStackTrace();
             }
         }
-        while(!Config.isFinished) {
+        int allTasks = appList.size()*appList.get(0).getTasks().size();
+
+        while(Config.taskCount != allTasks) {
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
-        Logger.info("Finish application scheduler");
+        Logger.info("=== Finish application scheduler");
     }
 
     public List<App> getAppList() {

@@ -46,13 +46,15 @@ public class Cloud {
     }
 
     private void processArTask(Task t) {
+        Logger.trace("= Start AR task id " + t.getTaskId() + " in cloud " + getCloudId());
         long startTime = System.currentTimeMillis();
         long finishTime = System.currentTimeMillis() + t.getExecutionTime();
         boolean isFinished = false;
         while(!isFinished) {
             if(System.currentTimeMillis() > finishTime) {
-                Logger.trace("AR Task " + t.getTaskId() + " isFinished");
+                Logger.trace("= AR Task " + t.getTaskId() + " isFinished");
                 t.setFinished(true);
+                Config.taskCount ++;
                 return;
             }
             else {
@@ -66,19 +68,21 @@ public class Cloud {
     }
 
     private void processBeTask(Task t) {
+        Logger.trace("= Start BE task id " + t.getTaskId() + "in cloud " + getCloudId());
         long startTime = System.currentTimeMillis();
         long finishTime = System.currentTimeMillis() + t.getExecutionTime();
-        boolean isFinished = false;
-        while(!isFinished) {
+        while(true) {
             if(!arTasks.isEmpty()) {
                 Task arTask = arTasks.poll();
+                Logger.trace("= BE task " + t.getTaskId() +  " is interrupted by AR task " + arTask.getTaskId());
                 finishTime+= arTask.getExecutionTime();
                 processArTask(arTask);
             }
             else if(System.currentTimeMillis() > finishTime) {
-                Logger.trace("BE Task " + t.getTaskId() + " isFinished");
+                Logger.trace("= BE Task " + t.getTaskId() + " isFinished");
                 t.setFinished(true);
                 t.getCloud().setFeedbackFactor((finishTime - startTime)/t.getExecutionTime());
+                Config.taskCount ++;
                 return;
             }
             else {

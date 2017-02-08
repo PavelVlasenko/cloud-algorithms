@@ -21,7 +21,7 @@ public class CloudManager {
 
     public void addTask(Task task)
     {
-        Logger.debug("Adding task" + task.getTaskId() + " to cloud manger");
+        Logger.debug("== Adding task" + task.getTaskId() + " to cloud manger");
         if(task.getType() == AppType.BEST_EFFORT) {
             beTaskPool.add(task);
         }
@@ -58,13 +58,14 @@ public class CloudManager {
 
     private Cloud calculateCloudForArTask(Task t) {
         Integer min = 0;
-        Cloud result = null;
+        Cloud cloud = null;
         for(Map.Entry<Cloud, Integer> entry : ETM.row(t.getTaskId()).entrySet()) {
             if(entry.getValue() > min) {
-                result = entry.getKey();
+                cloud = entry.getKey();
+                min = entry.getValue();
             }
         }
-        return result;
+        return cloud;
     }
 
     private Cloud calculateCloudForBeTask(Task t) {
@@ -75,6 +76,7 @@ public class CloudManager {
             Integer time = entry.getValue();
             if(c.getEAT() + time > min) {
                 result = c;
+                min = c.getEAT() + time;
             }
         }
         t.setCloud(result);
