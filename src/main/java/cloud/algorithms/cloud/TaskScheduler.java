@@ -4,11 +4,15 @@ import cloud.algorithms.app.App;
 import cloud.algorithms.app.Task;
 import cloud.algorithms.utils.Config;
 import cloud.algorithms.utils.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Component;
 
+@Component
 public class TaskScheduler {
 
-    private CloudManager cloudManager = new CloudManager();
+    @Autowired
+    private CloudManager cloudManager;
 
     @Async
     public void processApp(App app) {

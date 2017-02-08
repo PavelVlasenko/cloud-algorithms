@@ -5,14 +5,17 @@ import cloud.algorithms.app.Task;
 import cloud.algorithms.utils.Algorithm;
 import cloud.algorithms.utils.Config;
 import cloud.algorithms.utils.Logger;
+import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Component;
 
 import java.util.LinkedList;
 import java.util.Map;
 
+@Component
 public class CloudManager {
-    public static Table<Integer, Cloud, Integer> ETM;
+    public static Table<Integer, Cloud, Integer> ETM = HashBasedTable.create();
     public static LinkedList<Task> beTaskPool;
     public static LinkedList<Task> arTaskPool;
 

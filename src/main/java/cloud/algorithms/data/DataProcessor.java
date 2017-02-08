@@ -11,6 +11,7 @@ import cloud.algorithms.utils.Config;
 import cloud.algorithms.utils.Logger;
 import com.google.common.collect.Table;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -19,6 +20,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+@Component
 public class DataProcessor {
 
     public List<App> processFile(String path) {
@@ -30,11 +32,15 @@ public class DataProcessor {
             App app = new App();
             int count = 0;
             while ((s = br.readLine()) != null) {
-                Task task = new Task();
+                String jobState = StringUtils.substringBetween(s, "JobState=", " ");
                 String jobId = StringUtils.substringBetween(s, "JobId=", " ");
                 String startTime = StringUtils.substringBetween(s, "StartTime=", " ");
                 String endTime = StringUtils.substringBetween(s, "EndTime=", " ");
                 SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-hh'T'HH:mm:ss");
+                if(!"COMPLETED".equals(jobState) || startTime.equals(endTime)) {
+                    continue;
+                }
+                Task task = new Task();
                 try {
                     Date startDate = sd.parse(startTime);
                     if(count == 0) {
@@ -42,6 +48,9 @@ public class DataProcessor {
                     }
                     Date endDate = sd.parse(endTime);
                     long executionTime = endDate.getTime() - startDate.getTime();
+                    if(executionTime < 0) {
+                        continue;
+                    }
                     task.setExecutionTime((int)executionTime);
                 } catch (ParseException e) {
                     e.printStackTrace();
@@ -99,6 +108,7 @@ public class DataProcessor {
             int i = 0;
             for(Task t :app.getTasks()) {
                 idMap.put(i, t.getTaskId());
+                i++;
             }
 
             LinkedList<Task> prioritizedList = new LinkedList<Task>();
@@ -109,8 +119,8 @@ public class DataProcessor {
             app.setTasks(prioritizedList);
 
             for(Edge e : dag.edges) {
-                Task pre = app.getTaskById(e.startVertex);
-                Task suc = app.getTaskById(e.endVertex);
+                Task pre = app.getTaskById(idMap.get(e.startVertex));
+                Task suc = app.getTaskById(idMap.get(e.endVertex));
 
                 pre.getSuccessors().add(suc);
                 suc.getPredecessors().add(pre);

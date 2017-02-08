@@ -10,22 +10,20 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.util.List;
 
-//@SpringBootApplication
+@SpringBootApplication
 public class Main {
     public static void main(String ... args) {
         SpringApplication.run(Main.class, args);
 
-        DataProcessor dp = new DataProcessor();
-        List<App> appList = dp.processFile("C:\\Users\\SBT-Vlasenko-PV\\Desktop\\test\\LLNL-Atlas-2006-0.txt");
-
-        AppScheduler appScheduler = new AppScheduler();
-        TaskScheduler taskScheduler = appScheduler.getTaskScheduler();
-        CloudManager cloudManager = taskScheduler.getCloudManager();
-        cloudManager.processTasks();
-
-        appScheduler.setAppList(appList);
-        appScheduler.startAppScheduler();
-
-
+//        DataProcessor dp = new DataProcessor();
+//        List<App> appList = dp.processFile("C:\\Users\\SBT-Vlasenko-PV\\Desktop\\test\\LLNL-Atlas-2006-0.txt");
+//
+//        AppScheduler appScheduler = new AppScheduler();
+//        TaskScheduler taskScheduler = appScheduler.getTaskScheduler();
+//        CloudManager cloudManager = taskScheduler.getCloudManager();
+//        cloudManager.processTasks();
+//
+//        appScheduler.setAppList(appList);
+//        appScheduler.startAppScheduler();
     }
 }

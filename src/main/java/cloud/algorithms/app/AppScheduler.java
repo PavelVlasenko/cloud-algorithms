@@ -3,14 +3,18 @@ package cloud.algorithms.app;
 import cloud.algorithms.cloud.TaskScheduler;
 import cloud.algorithms.utils.Config;
 import cloud.algorithms.utils.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+@Component
 public class AppScheduler {
 
-    private TaskScheduler taskScheduler = new TaskScheduler();
+    @Autowired
+    private TaskScheduler taskScheduler;
 
     private List<App> appList = new ArrayList<App>();
 
