@@ -16,12 +16,12 @@ import java.util.Map;
 @Component
 public class CloudManager {
     public static Table<Integer, Cloud, Integer> ETM = HashBasedTable.create();
-    public static LinkedList<Task> beTaskPool;
-    public static LinkedList<Task> arTaskPool;
+    public static LinkedList<Task> beTaskPool = new LinkedList<Task>();
+    public static LinkedList<Task> arTaskPool = new LinkedList<Task>();
 
     public void addTask(Task task)
     {
-        Logger.debug("Adding task to cloud manger");
+        Logger.debug("Adding task" + task.getTaskId() + " to cloud manger");
         if(task.getType() == AppType.BEST_EFFORT) {
             beTaskPool.add(task);
         }
@@ -32,6 +32,7 @@ public class CloudManager {
 
     @Async
     public void processTasks() {
+        Logger.debug("== Process tasks in thread " + Thread.currentThread().getId());
         while(!Config.isFinished) {
             if(!arTaskPool.isEmpty()) {
                 Task t = arTaskPool.poll();
@@ -42,7 +43,7 @@ public class CloudManager {
                 if(Config.algorithm == Algorithm.DLS) {
                     Task t = beTaskPool.poll();
                     Cloud cloud = calculateCloudForBeTask(t);
-                    cloud.getExecutor().submit(t);
+                    cloud.getBeTasks().add(t);
                 }
             }
             else {

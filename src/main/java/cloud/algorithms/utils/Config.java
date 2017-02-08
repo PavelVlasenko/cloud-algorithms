@@ -9,7 +9,9 @@ public class Config {
     public static long minTimeUnit = 500;
     public static int finishedAppCount;
     public static boolean isFinished;
-    public static LogLevel logLevel = LogLevel.DEBUG;
+    public static LogLevel logLevel = LogLevel.TRACE;
 
     public static int taskNumb = 64;
+
+    public static int timeDelimeter = 100;
 }

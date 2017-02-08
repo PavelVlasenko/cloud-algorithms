@@ -16,12 +16,12 @@ public class TaskScheduler {
 
     @Async
     public void processApp(App app) {
-        Logger.debug("==Task scheduler receive app");
+        Logger.debug("== Task scheduler receive app in Thread " +Thread.currentThread().getId());
         while(!app.getTasks().isEmpty()) {
             Task task = app.getTasks().poll();
             distributeTask(task);
         }
-        System.out.println("App is finished");
+        System.out.println("*** App is finished");
         Config.finishedAppCount++;
     }
 
@@ -31,6 +31,7 @@ public class TaskScheduler {
             return;
         }
         try {
+            Logger.trace("Task " + task.getTaskId() + " predecessors not finished");
             Thread.sleep(Config.minTimeUnit);
         } catch (InterruptedException e) {
             e.printStackTrace();

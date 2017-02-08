@@ -1,7 +1,7 @@
 package cloud.algorithms.data;
 
+import cloud.algorithms.SpringContext;
 import cloud.algorithms.app.App;
-import cloud.algorithms.app.AppScheduler;
 import cloud.algorithms.app.AppType;
 import cloud.algorithms.app.Task;
 import cloud.algorithms.cloud.Cloud;
@@ -11,6 +11,7 @@ import cloud.algorithms.utils.Config;
 import cloud.algorithms.utils.Logger;
 import com.google.common.collect.Table;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Lookup;
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
@@ -22,6 +23,11 @@ import java.util.*;
 
 @Component
 public class DataProcessor {
+
+    @Lookup("Cloud")
+    public Cloud getCloud() {
+        return null;
+    }
 
     public List<App> processFile(String path) {
         Logger.info("=== Start process file in path " + path);
@@ -84,6 +90,11 @@ public class DataProcessor {
                 apps.get(i).setType(AppType.BEST_EFFORT);
             }
         }
+        for(App app : apps) {
+            for(Task t : app.getTasks()) {
+                t.setType(app.getType());
+            }
+        }
 
         Logger.info("=== Set application arrival time");
         long firstArrivalTime = apps.get(0).getArrivalTime();
@@ -131,9 +142,17 @@ public class DataProcessor {
         Logger.info("=== Generated " + apps.size() + " applications");
 
         Logger.info("=== Generate ETM matrix");
-        Cloud cloud1 = new Cloud();
-        Cloud cloud2 = new Cloud();
-        Cloud cloud3 = new Cloud();
+        Cloud cloud1 = (Cloud)SpringContext.appContext.getBean("cloud");
+        Cloud cloud2 = (Cloud)SpringContext.appContext.getBean("cloud");
+        Cloud cloud3 = (Cloud)SpringContext.appContext.getBean("cloud");
+
+        cloud1.setCloudId(1);
+        cloud1.setCloudId(2);
+        cloud1.setCloudId(3);
+
+        cloud1.runCloud();
+        cloud1.runCloud();
+        cloud1.runCloud();
 
         Table<Integer, Cloud, Integer> etm = CloudManager.ETM;
         for(App app :apps) {
