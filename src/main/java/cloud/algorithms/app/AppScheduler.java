@@ -24,7 +24,8 @@ public class AppScheduler {
         Config.allTasks = appList.size()*appList.get(0).getTasks().size();
         for(App app : appList) {
             try {
-                Thread.sleep(app.getArrivalTime());
+                //Thread.sleep(app.getArrivalTime());
+                Thread.sleep(0);
                 taskScheduler.processApp(app);
             } catch (InterruptedException e) {
                 e.printStackTrace();

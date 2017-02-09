@@ -35,15 +35,23 @@ public class CloudManager {
         Logger.debug("== Process tasks in thread " + Thread.currentThread().getId());
         while(!Config.isFinished) {
             if(!arTaskPool.isEmpty()) {
-                Task t = arTaskPool.poll();
-                Cloud cloud = calculateCloudForArTask(t);
-                cloud.getArTasks().add(t);
+                if(Config.algorithm == Algorithm.DLS || Config.algorithm == Algorithm.FDLS) {
+                    Task t = arTaskPool.poll();
+                    Cloud cloud = calculateCloudForArTask(t);
+                    cloud.getArTasks().add(t);
+                }
+                else {
+
+                }
             }
             else  if(!beTaskPool.isEmpty()){
                 if(Config.algorithm == Algorithm.DLS || Config.algorithm == Algorithm.FDLS) {
                     Task t = beTaskPool.poll();
                     Cloud cloud = calculateCloudForBeTask(t);
                     cloud.getBeTasks().add(t);
+                }
+                else {
+
                 }
             }
             else {
@@ -65,6 +73,8 @@ public class CloudManager {
                 min = entry.getValue();
             }
         }
+        t.setExecutionTime(min);
+        cloud.setEAT(cloud.getEAT() + min);
         return cloud;
     }
 

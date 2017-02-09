@@ -43,7 +43,7 @@ public class Cloud {
     }
 
     private void processArTask(Task t) {
-        Logger.trace("= Start AR task id " + t.getTaskId() + " in cloud " + getCloudId());
+        Logger.trace("= Start AR task id " + t.getTaskId() + " in cloud " + getCloudId() + ", execution time " + t.getExecutionTime());
         long startTime = System.currentTimeMillis();
         long finishTime = System.currentTimeMillis() + t.getExecutionTime();
         boolean isFinished = false;
@@ -62,10 +62,15 @@ public class Cloud {
                 }
             }
         }
+        //TODO
+//        if (!arTasks.isEmpty()) {
+//            Task nextArTask = arTasks.poll();
+//            processArTask(nextArTask);
+//        }
     }
 
     private void processBeTask(Task t) {
-        Logger.trace("= Start BE task id " + t.getTaskId() + " in cloud " + getCloudId());
+        Logger.trace("= Start BE task id " + t.getTaskId() + " in cloud " + getCloudId()  + ", execution time " + t.getExecutionTime());
         long startTime = System.currentTimeMillis();
         long finishTime = System.currentTimeMillis() + t.getExecutionTime();
         while(true) {

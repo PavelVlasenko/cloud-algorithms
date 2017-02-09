@@ -27,7 +27,7 @@ public class Starter {
     public void start() {
         Logger.debug("== Main starter in thread " + Thread.currentThread().getId());
         DataProcessor dp = new DataProcessor();
-        List<App> appList = dp.processFile("C:\\Users\\SBT-Vlasenko-PV\\Desktop\\test\\LLNL-Atlas-2006-0.txt");
+        List<App> appList = dp.processFile("C:\\Users\\SBT-Vlasenko-PV\\Desktop\\test\\LLNL-Atlas-2006-01.txt");
 
         cloudManager.processTasks();
 

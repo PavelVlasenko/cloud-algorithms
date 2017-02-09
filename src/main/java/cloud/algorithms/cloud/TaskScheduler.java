@@ -22,7 +22,6 @@ public class TaskScheduler {
             distributeTask(task);
         }
         System.out.println("*** App is finished");
-        //Config.finishedAppCount++;
     }
 
     private void distributeTask(Task task) {

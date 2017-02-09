@@ -10,10 +10,10 @@ public class Config {
     public static boolean isFinished;
     public static LogLevel logLevel = LogLevel.TRACE;
 
-    public static int taskNumb = 7;
+    public static int taskNumb = 64;
     public static int allTasks;
 
-    public static int timeDelimeter = 100;
+    public static int timeDelimeter = 500;
 
     public static int finishedTasks;
 
