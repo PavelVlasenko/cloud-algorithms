@@ -7,10 +7,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
-import java.util.Date;
 import java.util.LinkedList;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 @Component
 @Scope("prototype")
@@ -54,7 +51,7 @@ public class Cloud {
             if(System.currentTimeMillis() > finishTime) {
                 Logger.trace("= AR Task " + t.getTaskId() + " isFinished");
                 t.setFinished(true);
-                Config.taskCount ++;
+                Config.incrementFinishedTasks();
                 return;
             }
             else {
@@ -68,7 +65,7 @@ public class Cloud {
     }
 
     private void processBeTask(Task t) {
-        Logger.trace("= Start BE task id " + t.getTaskId() + "in cloud " + getCloudId());
+        Logger.trace("= Start BE task id " + t.getTaskId() + " in cloud " + getCloudId());
         long startTime = System.currentTimeMillis();
         long finishTime = System.currentTimeMillis() + t.getExecutionTime();
         while(true) {
@@ -82,7 +79,7 @@ public class Cloud {
                 Logger.trace("= BE Task " + t.getTaskId() + " isFinished");
                 t.setFinished(true);
                 t.getCloud().setFeedbackFactor((finishTime - startTime)/t.getExecutionTime());
-                Config.taskCount ++;
+                Config.incrementFinishedTasks();
                 return;
             }
             else {

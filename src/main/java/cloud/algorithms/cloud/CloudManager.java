@@ -40,7 +40,7 @@ public class CloudManager {
                 cloud.getArTasks().add(t);
             }
             else  if(!beTaskPool.isEmpty()){
-                if(Config.algorithm == Algorithm.DLS) {
+                if(Config.algorithm == Algorithm.DLS || Config.algorithm == Algorithm.FDLS) {
                     Task t = beTaskPool.poll();
                     Cloud cloud = calculateCloudForBeTask(t);
                     cloud.getBeTasks().add(t);
@@ -57,10 +57,10 @@ public class CloudManager {
     }
 
     private Cloud calculateCloudForArTask(Task t) {
-        Integer min = 0;
+        Integer min = Integer.MAX_VALUE;
         Cloud cloud = null;
         for(Map.Entry<Cloud, Integer> entry : ETM.row(t.getTaskId()).entrySet()) {
-            if(entry.getValue() > min) {
+            if(entry.getValue() < min) {
                 cloud = entry.getKey();
                 min = entry.getValue();
             }
@@ -69,12 +69,12 @@ public class CloudManager {
     }
 
     private Cloud calculateCloudForBeTask(Task t) {
-        Integer min = 0;
+        Integer min = Integer.MAX_VALUE;
         Cloud result = null;
         for(Map.Entry<Cloud, Integer> entry : ETM.row(t.getTaskId()).entrySet()) {
             Cloud c = entry.getKey();
             Integer time = entry.getValue();
-            if(c.getEAT() + time > min) {
+            if(c.getEAT() + time < min) {
                 result = c;
                 min = c.getEAT() + time;
             }

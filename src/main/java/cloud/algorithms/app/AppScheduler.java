@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 @Component
 public class AppScheduler {
@@ -19,7 +19,9 @@ public class AppScheduler {
     private List<App> appList = new ArrayList<App>();
 
     public void startAppScheduler() {
-        Logger.info("=== Start application scheduler");
+        Date start = new Date();
+        Logger.info("=== Start applications at " + start);
+        Config.allTasks = appList.size()*appList.get(0).getTasks().size();
         for(App app : appList) {
             try {
                 Thread.sleep(app.getArrivalTime());
@@ -28,16 +30,17 @@ public class AppScheduler {
                 e.printStackTrace();
             }
         }
-        int allTasks = appList.size()*appList.get(0).getTasks().size();
 
-        while(Config.taskCount != allTasks) {
+        while(!Config.isFinished) {
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
-        Logger.info("=== Finish application scheduler");
+        Date finish = new Date();
+        Logger.info("*** Finish applications at " + finish);
+        Logger.info("*** APPLICATION PROCESSING TAKES " + (finish.getTime() - start.getTime())/1000 + " seconds");
     }
 
     public List<App> getAppList() {
