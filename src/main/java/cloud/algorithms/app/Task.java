@@ -1,7 +1,7 @@
 package cloud.algorithms.app;
 
 import cloud.algorithms.cloud.Cloud;
-import cloud.algorithms.utils.Config;
+import cloud.algorithms.Config;
 
 import java.util.HashSet;
 import java.util.Set;

@@ -2,10 +2,9 @@ package cloud.algorithms.cloud;
 
 import cloud.algorithms.app.Task;
 import cloud.algorithms.utils.Algorithm;
-import cloud.algorithms.utils.Config;
+import cloud.algorithms.Config;
 import cloud.algorithms.utils.Logger;
 import org.springframework.context.annotation.Scope;
-import org.springframework.core.env.SystemEnvironmentPropertySource;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 

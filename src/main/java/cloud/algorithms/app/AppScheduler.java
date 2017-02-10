@@ -1,7 +1,7 @@
 package cloud.algorithms.app;
 
 import cloud.algorithms.cloud.TaskScheduler;
-import cloud.algorithms.utils.Config;
+import cloud.algorithms.Config;
 import cloud.algorithms.utils.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -25,8 +25,8 @@ public class AppScheduler {
         for(App app : appList) {
             try {
                 //TODO
-                //Thread.sleep(app.getArrivalTime());
-                Thread.sleep(0);
+                Thread.sleep(app.getArrivalTime());
+                //Thread.sleep(0);
                 taskScheduler.processApp(app);
             } catch (InterruptedException e) {
                 e.printStackTrace();

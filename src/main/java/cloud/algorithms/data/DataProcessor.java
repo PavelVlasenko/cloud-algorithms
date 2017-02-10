@@ -7,11 +7,10 @@ import cloud.algorithms.app.Task;
 import cloud.algorithms.cloud.Cloud;
 import cloud.algorithms.cloud.CloudManager;
 import cloud.algorithms.dag.*;
-import cloud.algorithms.utils.Config;
+import cloud.algorithms.Config;
 import cloud.algorithms.utils.Logger;
 import com.google.common.collect.Table;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Lookup;
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
@@ -23,11 +22,6 @@ import java.util.*;
 
 @Component
 public class DataProcessor {
-
-    @Lookup("Cloud")
-    public Cloud getCloud() {
-        return null;
-    }
 
     public List<App> processFile(String path) {
         List<App> apps = parseFile(path);
@@ -51,7 +45,7 @@ public class DataProcessor {
                 String jobId = StringUtils.substringBetween(s, "JobId=", " ");
                 String startTime = StringUtils.substringBetween(s, "StartTime=", " ");
                 String endTime = StringUtils.substringBetween(s, "EndTime=", " ");
-                SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-hh'T'HH:mm:ss");
+                SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                 if(!"COMPLETED".equals(jobState) || startTime.equals(endTime)) {
                     continue;
                 }
@@ -111,7 +105,11 @@ public class DataProcessor {
         Logger.info("=== Set application arrival time");
         long firstArrivalTime = apps.get(0).getArrivalTime();
         for(App app : apps) {
-            app.setArrivalTime((app.getArrivalTime() - firstArrivalTime)/Config.exTimeDelimeter);
+            long arrivalTime = (app.getArrivalTime() - firstArrivalTime)/(Config.exTimeDelimeter*3);
+            if(Config.arrivalGap != 0 ) {
+                arrivalTime = arrivalTime/Config.arrivalGap;
+            }
+            app.setArrivalTime(arrivalTime);
         }
     }
 

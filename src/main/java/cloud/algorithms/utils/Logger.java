@@ -1,5 +1,7 @@
 package cloud.algorithms.utils;
 
+import cloud.algorithms.Config;
+
 public class Logger {
     public static void debug(String s) {
         if(Config.logLevel == LogLevel.DEBUG || Config.logLevel == LogLevel.TRACE)

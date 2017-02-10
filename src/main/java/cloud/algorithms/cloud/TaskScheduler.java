@@ -2,7 +2,7 @@ package cloud.algorithms.cloud;
 
 import cloud.algorithms.app.App;
 import cloud.algorithms.app.Task;
-import cloud.algorithms.utils.Config;
+import cloud.algorithms.Config;
 import cloud.algorithms.utils.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;

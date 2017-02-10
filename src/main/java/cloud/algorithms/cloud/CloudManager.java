@@ -3,7 +3,7 @@ package cloud.algorithms.cloud;
 import cloud.algorithms.app.AppType;
 import cloud.algorithms.app.Task;
 import cloud.algorithms.utils.Algorithm;
-import cloud.algorithms.utils.Config;
+import cloud.algorithms.Config;
 import cloud.algorithms.utils.Logger;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
@@ -35,8 +35,8 @@ public class CloudManager {
         Logger.debug("== Process tasks in thread " + Thread.currentThread().getId());
         while(!Config.isFinished) {
             if(!arTaskPool.isEmpty()) {
-                Task t = arTaskPool.poll();
                 if(Config.algorithm == Algorithm.DLS || Config.algorithm == Algorithm.FDLS) {
+                    Task t = arTaskPool.poll();
                     Cloud cloud = calculateCloudForArTask(t);
                     cloud.getArTasks().add(t);
                 }

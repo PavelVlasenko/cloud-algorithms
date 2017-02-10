@@ -5,12 +5,9 @@ import cloud.algorithms.app.AppScheduler;
 import cloud.algorithms.cloud.CloudManager;
 import cloud.algorithms.data.DataProcessor;
 import cloud.algorithms.utils.Algorithm;
-import cloud.algorithms.utils.Config;
-import cloud.algorithms.utils.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.Scanner;
 
