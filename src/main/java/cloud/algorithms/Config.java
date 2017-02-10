@@ -8,16 +8,16 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class Config {
-    public static Algorithm algorithm = Algorithm.DMMS;
+    public static Algorithm algorithm = Algorithm.FDLS;
     public static String dataFilePath;
 
     public static LogLevel logLevel = LogLevel.TRACE;
 
-    public static int arPercentage = 50;
+    public static int arPercentage = 20;
     public static double alpha = 1.0;
     public static int arrivalGap = 200;
     public static int taskNumb = 7;
-    public static long minTimeUnit = 100;
+    public static long minTimeUnit = 30;
     public static long exTimeDelimeter = 200;
 
     public static int allTasks;

@@ -4,5 +4,5 @@ public enum Algorithm {
     DLS,
     FDLS,
     DMMS,
-    FCMMS
+    FDMMS
 }

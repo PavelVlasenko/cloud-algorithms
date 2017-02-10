@@ -19,7 +19,7 @@ public class Cloud {
     private LinkedList<Task> beTasks = new LinkedList<Task>();
 
     private Integer EAT = new Integer(0);
-    private double feedbackFactor = 1.0;
+    private double feedbackFactor = 0.0000001;
 
     @Async
     public void runCloud() {
@@ -95,13 +95,18 @@ public class Cloud {
                 }
             }
         }
-        if(Config.algorithm == Algorithm.FCMMS || Config.algorithm == Algorithm.FDLS) {
+        if(Config.algorithm == Algorithm.FDMMS || Config.algorithm == Algorithm.FDLS) {
             calculateFeedBackFactor(startTime, finishTime, System.currentTimeMillis());
         }
     }
 
     private void calculateFeedBackFactor(long startTime, long expectedFinishTime, long actualFinishTime) {
-        feedbackFactor = Config.alpha * ((double)(actualFinishTime - startTime))/((double)(expectedFinishTime - startTime));
+        double expectedTime = (double)(expectedFinishTime - startTime);
+        double result = Config.alpha * ((actualFinishTime - startTime - expectedTime) / expectedTime);
+        if(result > 3) {
+            return;
+        }
+        feedbackFactor = result;
         Logger.trace("= Set feedback factor " + feedbackFactor + " in cloud " + cloudId);
     }
 

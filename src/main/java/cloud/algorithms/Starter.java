@@ -52,7 +52,7 @@ public class Starter {
                 "    1. DLS\r\n" +
                 "    2. FDLS\r\n" +
                 "    3. DMMS\r\n" +
-                "    4. FCMMS\r\n");
+                "    4. FDMMS\r\n");
         int algorithm = Integer.valueOf(scanner.nextLine());
         switch (algorithm) {
             case 1:
@@ -65,7 +65,7 @@ public class Starter {
                 Config.algorithm = Algorithm.DMMS;
                 break;
             case 4:
-                Config.algorithm = Algorithm.FCMMS;
+                Config.algorithm = Algorithm.FDMMS;
                 break;
             default:
                 Config.algorithm = Algorithm.DLS;
