@@ -27,14 +27,27 @@ public class Starter {
     private CloudManager cloudManager;
 
     public void start() {
-        enterParams();
+        //TODO
+        //enterParams();
+        printParams();
         DataProcessor dp = new DataProcessor();
         //TODO
-        List<App> appList = dp.processFile("C:\\Users\\SBT-Vlasenko-PV\\Desktop\\test\\LLNL-Atlas-2006-0.txt");
+        List<App> appList = dp.processFile("C:\\Users\\SBT-Vlasenko-PV\\Desktop\\test\\LLNL-Atlas-2006-01.txt");
 
         cloudManager.processTasks();
         appScheduler.setAppList(appList);
         appScheduler.startAppScheduler();
+    }
+
+    private void printParams() {
+        System.out.println("======================== CONFIGURATION ==================\r\nAlgorithm type  " + Config.algorithm + "\r\n" +
+                "Data file path  " + Config.dataFilePath + "\r\n" +
+                "Logger level  " + Config.logLevel + "\r\n" +
+                "Advanced reservation applications percentage  " + Config.arPercentage + "\r\n" +
+                "Alpha " + Config.alpha + "\r\n" +
+                "Arrival gap between applications " + Config.arrivalGap + "\r\n" +
+                "The number of tasks in each application " + Config.taskNumb + "\r\n" +
+                "======================================================");
     }
 
     private void enterParams() {

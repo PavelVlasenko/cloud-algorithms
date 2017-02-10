@@ -10,22 +10,11 @@ public class Config {
 
     public static LogLevel logLevel = LogLevel.TRACE;
 
-
     public static int arPercentage = 50;
-
-
     public static double alpha = 1.0;
-
-
     public static int arrivalGap = 0;
-
-
     public static int taskNumb = 7;
-
-
     public static long minTimeUnit = 500;
-
-
     public static long exTimeDelimeter = 500;
 
     public static int allTasks;

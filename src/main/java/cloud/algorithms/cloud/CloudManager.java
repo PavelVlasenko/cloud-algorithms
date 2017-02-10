@@ -85,7 +85,7 @@ public class CloudManager {
         for(Map.Entry<Cloud, Integer> entry : ETM.row(t.getTaskId()).entrySet()) {
             Cloud c = entry.getKey();
             Integer time = entry.getValue();
-            if(c.getEAT() + time < min) {
+            if((c.getEAT() + c.getFeedbackFactor()*time) < min) {
                 result = c;
                 min = c.getEAT() + time;
                 executionTime = time;
@@ -106,7 +106,7 @@ public class CloudManager {
             for(Map.Entry<Cloud, Integer> entry : ETM.row(t.getTaskId()).entrySet()) {
                 Cloud entryCloud = entry.getKey();
                 Integer entryTime = entry.getValue();
-                Integer exTime = type == AppType.BEST_EFFORT ? entryCloud.getEAT() + entryTime : entryTime;
+                Integer exTime = type == AppType.BEST_EFFORT ? entryCloud.getEAT() + (int)entryCloud.getFeedbackFactor()*entryTime : entryTime;
                 if(exTime < minExecutionTime) {
                     cloud = entryCloud;
                     executionTime = entryTime;

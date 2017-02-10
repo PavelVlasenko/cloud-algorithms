@@ -103,7 +103,8 @@ public class Cloud {
     }
 
     private void calculateFeedBackFactor(long startTime, long expectedFinishTime, long actualFinishTime) {
-        feedbackFactor = ((double)(actualFinishTime - startTime))/((double)(expectedFinishTime - startTime));
+        feedbackFactor = Config.alpha * ((double)(actualFinishTime - startTime))/((double)(expectedFinishTime - startTime));
+        Logger.trace("= Set feedback factor " + feedbackFactor + " in cloud " + cloudId);
     }
 
     public LinkedList<Task> getArTasks() {
