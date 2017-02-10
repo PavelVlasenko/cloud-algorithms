@@ -30,9 +30,8 @@ public class Starter {
         //TODO
         //enterParams();
         printParams();
-        DataProcessor dp = new DataProcessor();
         //TODO
-        List<App> appList = dp.processFile("C:\\Users\\SBT-Vlasenko-PV\\Desktop\\test\\LLNL-Atlas-2006-01.txt");
+        List<App> appList = dp.processFile("/home/pavel/Desktop/test/LLNL-Atlas-2006-01.txt");
 
         cloudManager.processTasks();
         appScheduler.setAppList(appList);

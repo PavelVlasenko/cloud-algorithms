@@ -30,6 +30,15 @@ public class DataProcessor {
     }
 
     public List<App> processFile(String path) {
+        List<App> apps = parseFile(path);
+        configureApps(apps);
+        mergeWithDags(apps);
+        generateEtmMatrix(apps);
+        Logger.info("=== Generated " + apps.size() + " applications");
+        return apps;
+    }
+
+    private List<App> parseFile(String path) {
         Logger.info("=== Start process file in path " + path);
         List<App> apps = new ArrayList<App>();
         try {
@@ -74,7 +83,10 @@ public class DataProcessor {
             e.printStackTrace();
         }
         Logger.info("=== Process file in path " + path + " is finished");
+        return apps;
+    }
 
+    private void configureApps(List<App> apps) {
         Logger.info("=== Start setting application type, AR app percentage = " + Config.arPercentage);
         int appSize = apps.size();
         List<Integer> arApps = new ArrayList<Integer>();
@@ -101,10 +113,11 @@ public class DataProcessor {
         for(App app : apps) {
             app.setArrivalTime((app.getArrivalTime() - firstArrivalTime)/Config.exTimeDelimeter);
         }
+    }
+
+    private void mergeWithDags(List<App> apps) {
         Logger.info("=== Merge dag with application");
-
         DagGenerator dagGenerator = new DagGenerator();
-
         for(App app : apps) {
             Dag dag = dagGenerator.createDag(Config.taskNumb);
             for(int i=0; i<app.getTasks().size(); i++) {
@@ -137,10 +150,9 @@ public class DataProcessor {
                 suc.getPredecessors().add(pre);
             }
         }
+    }
 
-        Logger.info("=== Data parsing from file " + path + " is finished");
-        Logger.info("=== Generated " + apps.size() + " applications");
-
+    private void generateEtmMatrix(List<App> apps) {
         Logger.info("=== Generate ETM matrix");
         Cloud cloud1 = (Cloud)SpringContext.appContext.getBean("cloud");
         Cloud cloud2 = (Cloud)SpringContext.appContext.getBean("cloud");
@@ -165,7 +177,5 @@ public class DataProcessor {
             }
         }
         Logger.info("=== Generating ETM matrix is finished");
-
-        return apps;
     }
 }
