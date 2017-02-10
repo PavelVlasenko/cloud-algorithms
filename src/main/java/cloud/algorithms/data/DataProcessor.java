@@ -53,7 +53,7 @@ public class DataProcessor {
                         app.setArrivalTime(startDate.getTime());
                     }
                     Date endDate = sd.parse(endTime);
-                    long executionTime = (endDate.getTime() - startDate.getTime())/Config.timeDelimeter;
+                    long executionTime = (endDate.getTime() - startDate.getTime())/Config.exTimeDelimeter;
                     if(executionTime <= 0) {
                         continue;
                     }
@@ -99,7 +99,7 @@ public class DataProcessor {
         Logger.info("=== Set application arrival time");
         long firstArrivalTime = apps.get(0).getArrivalTime();
         for(App app : apps) {
-            app.setArrivalTime((app.getArrivalTime() - firstArrivalTime)/Config.timeDelimeter);
+            app.setArrivalTime((app.getArrivalTime() - firstArrivalTime)/Config.exTimeDelimeter);
         }
         Logger.info("=== Merge dag with application");
 
