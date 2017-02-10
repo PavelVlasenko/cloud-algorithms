@@ -4,12 +4,15 @@ import cloud.algorithms.app.App;
 import cloud.algorithms.app.AppScheduler;
 import cloud.algorithms.cloud.CloudManager;
 import cloud.algorithms.data.DataProcessor;
+import cloud.algorithms.utils.Algorithm;
+import cloud.algorithms.utils.Config;
 import cloud.algorithms.utils.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
+import java.util.Scanner;
 
 @Component
 public class Starter {
@@ -23,17 +26,45 @@ public class Starter {
     @Autowired
     private CloudManager cloudManager;
 
-    //@PostConstruct
     public void start() {
-        Logger.debug("== Main starter in thread " + Thread.currentThread().getId());
+        enterParams();
         DataProcessor dp = new DataProcessor();
-        List<App> appList = dp.processFile("C:\\Users\\SBT-Vlasenko-PV\\Desktop\\test\\LLNL-Atlas-2006-01.txt");
+        //TODO
+        List<App> appList = dp.processFile("C:\\Users\\SBT-Vlasenko-PV\\Desktop\\test\\LLNL-Atlas-2006-0.txt");
 
         cloudManager.processTasks();
-
         appScheduler.setAppList(appList);
         appScheduler.startAppScheduler();
+    }
 
-        Integer i = 9;
+    private void enterParams() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Choose the algorithm (enter number):\r\n" +
+                "    1. DLS\r\n" +
+                "    2. FDLS\r\n" +
+                "    3. DMMS\r\n" +
+                "    4. FCMMS\r\n");
+        int algorithm = Integer.valueOf(scanner.nextLine());
+        switch (algorithm) {
+            case 1:
+                Config.algorithm = Algorithm.DLS;
+                break;
+            case 2:
+                Config.algorithm = Algorithm.FDLS;
+                break;
+            case 3:
+                Config.algorithm = Algorithm.DMMS;
+                break;
+            case 4:
+                Config.algorithm = Algorithm.FCMMS;
+                break;
+            default:
+                Config.algorithm = Algorithm.DLS;
+                break;
+        }
+
+        System.out.println("Enter data file path:\r\n");
+        Config.dataFilePath = scanner.nextLine();
+        scanner.close();
     }
 }

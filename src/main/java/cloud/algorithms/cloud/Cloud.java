@@ -1,9 +1,11 @@
 package cloud.algorithms.cloud;
 
 import cloud.algorithms.app.Task;
+import cloud.algorithms.utils.Algorithm;
 import cloud.algorithms.utils.Config;
 import cloud.algorithms.utils.Logger;
 import org.springframework.context.annotation.Scope;
+import org.springframework.core.env.SystemEnvironmentPropertySource;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
@@ -18,7 +20,7 @@ public class Cloud {
     private LinkedList<Task> beTasks = new LinkedList<Task>();
 
     private Integer EAT = new Integer(0);
-    private double feedbackFactor;
+    private double feedbackFactor = 1.0;
 
     @Async
     public void runCloud() {
@@ -85,7 +87,7 @@ public class Cloud {
                 t.setFinished(true);
                 t.getCloud().setFeedbackFactor((finishTime - startTime)/t.getExecutionTime());
                 Config.incrementFinishedTasks();
-                return;
+                break;
             }
             else {
                 try {
@@ -95,6 +97,13 @@ public class Cloud {
                 }
             }
         }
+        if(Config.algorithm == Algorithm.FCMMS || Config.algorithm == Algorithm.FDLS) {
+            calculateFeedBackFactor(startTime, finishTime, System.currentTimeMillis());
+        }
+    }
+
+    private void calculateFeedBackFactor(long startTime, long expectedFinishTime, long actualFinishTime) {
+        feedbackFactor = ((double)(actualFinishTime - startTime))/((double)(expectedFinishTime - startTime));
     }
 
     public LinkedList<Task> getArTasks() {
