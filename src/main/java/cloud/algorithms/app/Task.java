@@ -6,7 +6,7 @@ import cloud.algorithms.Config;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Task implements Runnable {
+public class Task {
     private int taskId;
     private int executionTime;
     private boolean isFinished;
@@ -15,21 +15,6 @@ public class Task implements Runnable {
 
     public Set<Task> predecessors = new HashSet<Task>();
     public Set<Task> successors = new HashSet<Task>();
-
-    @Override
-    public void run() {
-        long startTime = System.currentTimeMillis();
-        long finTime = startTime + executionTime;
-        while (System.currentTimeMillis() < finTime) {
-            try {
-                Thread.sleep(Config.minTimeUnit);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-        setFinished(true);
-        getCloud().setFeedbackFactor((System.currentTimeMillis() - startTime)/executionTime);
-    }
 
     public int getTaskId() {
         return taskId;

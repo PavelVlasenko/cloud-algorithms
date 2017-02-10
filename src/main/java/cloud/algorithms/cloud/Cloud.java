@@ -73,7 +73,7 @@ public class Cloud {
     private void processBeTask(Task t) {
         Logger.trace("= Start BE task id " + t.getTaskId() + " in cloud " + getCloudId()  + ", execution time " + t.getExecutionTime());
         long startTime = System.currentTimeMillis();
-        long finishTime = System.currentTimeMillis() + t.getExecutionTime();
+        long finishTime = startTime + t.getExecutionTime();
         while(true) {
             if(!arTasks.isEmpty()) {
                 Task arTask = arTasks.poll();
@@ -84,7 +84,6 @@ public class Cloud {
             else if(System.currentTimeMillis() > finishTime) {
                 Logger.trace("= BE Task " + t.getTaskId() + " isFinished");
                 t.setFinished(true);
-                t.getCloud().setFeedbackFactor((finishTime - startTime)/t.getExecutionTime());
                 Config.incrementFinishedTasks();
                 break;
             }

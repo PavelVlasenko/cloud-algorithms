@@ -19,7 +19,6 @@ public class Config {
     public static int taskNumb = 7;
     public static long minTimeUnit = 100;
     public static long exTimeDelimeter = 200;
-    public static long arrivalTimeDelimeter = 1000;
 
     public static int allTasks;
     public static int finishedTasks;

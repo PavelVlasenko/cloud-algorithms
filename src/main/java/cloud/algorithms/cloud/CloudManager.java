@@ -12,12 +12,14 @@ import org.springframework.stereotype.Component;
 
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 @Component
 public class CloudManager {
     public static Table<Integer, Cloud, Integer> ETM = HashBasedTable.create();
-    public static LinkedList<Task> beTaskPool = new LinkedList<Task>();
-    public static LinkedList<Task> arTaskPool = new LinkedList<Task>();
+    public static ConcurrentLinkedQueue<Task> beTaskPool = new ConcurrentLinkedQueue<Task>();
+    public static ConcurrentLinkedQueue<Task> arTaskPool = new ConcurrentLinkedQueue<Task>();
 
     public void addTask(Task task)
     {
@@ -97,7 +99,7 @@ public class CloudManager {
         return result;
     }
 
-    private void sendTaskToCloudByMinMinAlgorithm(LinkedList<Task> tasks, AppType type) {
+    private void sendTaskToCloudByMinMinAlgorithm(ConcurrentLinkedQueue<Task> tasks, AppType type) {
         Cloud cloud = null;
         Task task = null;
         Integer executionTime = null;
@@ -110,12 +112,14 @@ public class CloudManager {
                 if(exTime < minExecutionTime) {
                     cloud = entryCloud;
                     executionTime = entryTime;
+                    minExecutionTime = exTime;
                     task = t;
                 }
             }
         }
         tasks.remove(task);
         task.setExecutionTime(executionTime);
+        task.setCloud(cloud);
         cloud.setEAT(cloud.getEAT() + executionTime);
         if(type == AppType.BEST_EFFORT) {
             cloud.getBeTasks().add(task);
