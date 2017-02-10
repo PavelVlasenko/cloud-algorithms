@@ -35,13 +35,13 @@ public class CloudManager {
         Logger.debug("== Process tasks in thread " + Thread.currentThread().getId());
         while(!Config.isFinished) {
             if(!arTaskPool.isEmpty()) {
+                Task t = arTaskPool.poll();
                 if(Config.algorithm == Algorithm.DLS || Config.algorithm == Algorithm.FDLS) {
-                    Task t = arTaskPool.poll();
                     Cloud cloud = calculateCloudForArTask(t);
                     cloud.getArTasks().add(t);
                 }
                 else {
-
+                    sendTaskToCloudByMinMinAlgorithm(arTaskPool, AppType.ADVANCE_RESERVATION);
                 }
             }
             else  if(!beTaskPool.isEmpty()){
@@ -51,7 +51,7 @@ public class CloudManager {
                     cloud.getBeTasks().add(t);
                 }
                 else {
-
+                    sendTaskToCloudByMinMinAlgorithm(beTaskPool, AppType.BEST_EFFORT);
                 }
             }
             else {
@@ -80,6 +80,7 @@ public class CloudManager {
 
     private Cloud calculateCloudForBeTask(Task t) {
         Integer min = Integer.MAX_VALUE;
+        Integer executionTime = 0;
         Cloud result = null;
         for(Map.Entry<Cloud, Integer> entry : ETM.row(t.getTaskId()).entrySet()) {
             Cloud c = entry.getKey();
@@ -87,11 +88,40 @@ public class CloudManager {
             if(c.getEAT() + time < min) {
                 result = c;
                 min = c.getEAT() + time;
+                executionTime = time;
             }
         }
         t.setCloud(result);
-        t.setExecutionTime(min);
+        t.setExecutionTime(executionTime);
         result.setEAT(result.getEAT() + min);
         return result;
+    }
+
+    private void sendTaskToCloudByMinMinAlgorithm(LinkedList<Task> tasks, AppType type) {
+        Cloud cloud = null;
+        Task task = null;
+        Integer executionTime = null;
+        Integer minExecutionTime = Integer.MAX_VALUE;
+        for(Task t : tasks) {
+            for(Map.Entry<Cloud, Integer> entry : ETM.row(t.getTaskId()).entrySet()) {
+                Cloud entryCloud = entry.getKey();
+                Integer entryTime = entry.getValue();
+                Integer exTime = type == AppType.BEST_EFFORT ? entryCloud.getEAT() + entryTime : entryTime;
+                if(exTime < minExecutionTime) {
+                    cloud = entryCloud;
+                    executionTime = entryTime;
+                    task = t;
+                }
+            }
+        }
+        tasks.remove(task);
+        task.setExecutionTime(executionTime);
+        cloud.setEAT(cloud.getEAT() + executionTime);
+        if(type == AppType.BEST_EFFORT) {
+            cloud.getBeTasks().add(task);
+        }
+        else {
+            cloud.getArTasks().add(task);
+        }
     }
 }
