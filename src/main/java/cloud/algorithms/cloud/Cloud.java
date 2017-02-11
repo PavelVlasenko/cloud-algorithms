@@ -90,8 +90,6 @@ public class Cloud {
         double expectedTime = (double)(expectedFinishTime - startTime);
         double result = Config.alpha * ((actualFinishTime - startTime - expectedTime) / expectedTime);
         if(result > 3) {
-            //TODO
-            Logger.trace("---- Feedback = " + result);
             return;
         }
         feedbackFactor = result;
