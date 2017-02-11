@@ -40,30 +40,40 @@ public class DataProcessor {
             String s;
             App app = new App();
             int count = 0;
+            SimpleDateFormat sd1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+            SimpleDateFormat sd2 = new SimpleDateFormat("MM/dd-HH:mm:ss");
             while ((s = br.readLine()) != null) {
                 String jobState = StringUtils.substringBetween(s, "JobState=", " ");
                 String jobId = StringUtils.substringBetween(s, "JobId=", " ");
                 String startTime = StringUtils.substringBetween(s, "StartTime=", " ");
                 String endTime = StringUtils.substringBetween(s, "EndTime=", " ");
-                SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+
                 if(!"COMPLETED".equals(jobState) || startTime.equals(endTime)) {
                     continue;
                 }
                 Task task = new Task();
+                Date startDate = null;
+                Date endDate = null;
                 try {
-                    Date startDate = sd.parse(startTime);
-                    if(count == 0) {
-                        app.setArrivalTime(startDate.getTime());
-                    }
-                    Date endDate = sd.parse(endTime);
-                    long executionTime = (endDate.getTime() - startDate.getTime())/Config.exTimeDelimeter;
-                    if(executionTime <= 0) {
-                        continue;
-                    }
-                    task.setExecutionTime((int)executionTime);
+                    startDate = sd1.parse(startTime);
+                    endDate = sd1.parse(endTime);
                 } catch (ParseException e) {
-                    e.printStackTrace();
+                    try {
+                        startDate = sd2.parse(startTime);
+                        endDate = sd2.parse(endTime);
+                    } catch (ParseException e1) {
+                        e1.printStackTrace();
+                    }
                 }
+                if(count == 0) {
+                    app.setArrivalTime(startDate.getTime());
+                }
+                long executionTime = (endDate.getTime() - startDate.getTime())/Config.exTimeDelimeter;
+                if(executionTime <= 0) {
+                    continue;
+                }
+                task.setExecutionTime((int)executionTime);
+
                 task.setTaskId(Integer.valueOf(jobId));
                 app.getTasks().add(task);
                 count++;

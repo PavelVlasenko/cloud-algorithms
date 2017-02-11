@@ -28,7 +28,7 @@ public class Starter {
         //enterParams();
         printParams();
         //TODO
-        List<App> appList = dp.processFile("/home/pavel/Desktop/test/LLNL-Atlas-2006-01.txt");
+        List<App> appList = dp.processFile("/home/pavel/Desktop/test/LLNL-Atlas-2006-03.txt");
 
         cloudManager.processTasks();
         appScheduler.setAppList(appList);
