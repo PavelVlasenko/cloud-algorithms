@@ -18,8 +18,8 @@ public class Cloud {
     private LinkedList<Task> arTasks = new LinkedList<Task>();
     private LinkedList<Task> beTasks = new LinkedList<Task>();
 
-    private Integer EAT = new Integer(0);
-    private double feedbackFactor = 0.0000001;
+    private Integer EAT = 0;
+    private double feedbackFactor = 0.0d;
 
     @Async
     public void runCloud() {
@@ -45,43 +45,29 @@ public class Cloud {
 
     private void processArTask(Task t) {
         Logger.trace("= Start AR task id " + t.getTaskId() + " in cloud " + getCloudId() + ", execution time " + t.getExecutionTime());
-        long startTime = System.currentTimeMillis();
-        long finishTime = System.currentTimeMillis() + t.getExecutionTime();
-        boolean isFinished = false;
-        while(!isFinished) {
-            if(System.currentTimeMillis() > finishTime) {
-                Logger.trace("= AR Task " + t.getTaskId() + " isFinished");
-                t.setFinished(true);
-                Config.incrementFinishedTasks();
-                return;
-            }
-            else {
-                try {
-                    Thread.sleep(Config.minTimeUnit);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
+        try {
+            Thread.sleep(t.getExecutionTime());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
-        //TODO
-//        if (!arTasks.isEmpty()) {
-//            Task nextArTask = arTasks.poll();
-//            processArTask(nextArTask);
-//        }
+        Logger.trace("= AR Task " + t.getTaskId() + " isFinished");
+        t.setFinished(true);
+        Config.incrementFinishedTasks();
     }
 
     private void processBeTask(Task t) {
         Logger.trace("= Start BE task id " + t.getTaskId() + " in cloud " + getCloudId()  + ", execution time " + t.getExecutionTime());
         long startTime = System.currentTimeMillis();
-        long finishTime = startTime + t.getExecutionTime();
+        long expectedFinishTime = startTime + t.getExecutionTime();
+        long actualFinishTime = expectedFinishTime;
         while(true) {
             if(!arTasks.isEmpty()) {
                 Task arTask = arTasks.poll();
                 Logger.trace("= BE task " + t.getTaskId() +  " is interrupted by AR task " + arTask.getTaskId());
-                finishTime+= arTask.getExecutionTime();
+                actualFinishTime+= arTask.getExecutionTime();
                 processArTask(arTask);
             }
-            else if(System.currentTimeMillis() > finishTime) {
+            else if(System.currentTimeMillis() > actualFinishTime) {
                 Logger.trace("= BE Task " + t.getTaskId() + " isFinished");
                 t.setFinished(true);
                 Config.incrementFinishedTasks();
@@ -96,7 +82,7 @@ public class Cloud {
             }
         }
         if(Config.algorithm == Algorithm.FDMMS || Config.algorithm == Algorithm.FDLS) {
-            calculateFeedBackFactor(startTime, finishTime, System.currentTimeMillis());
+            calculateFeedBackFactor(startTime, expectedFinishTime, actualFinishTime);
         }
     }
 
@@ -104,6 +90,8 @@ public class Cloud {
         double expectedTime = (double)(expectedFinishTime - startTime);
         double result = Config.alpha * ((actualFinishTime - startTime - expectedTime) / expectedTime);
         if(result > 3) {
+            //TODO
+            Logger.trace("---- Feedback = " + result);
             return;
         }
         feedbackFactor = result;

@@ -8,9 +8,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class Config {
-    public static Algorithm algorithm = Algorithm.FDLS;
+    public static Algorithm algorithm = Algorithm.FDMMS;
     public static String dataFilePath;
-
     public static LogLevel logLevel = LogLevel.TRACE;
 
     public static int arPercentage = 20;

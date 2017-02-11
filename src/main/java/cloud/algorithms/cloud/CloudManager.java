@@ -103,22 +103,20 @@ public class CloudManager {
         Cloud cloud = null;
         Task task = null;
         Integer executionTime = null;
-        Integer minExecutionTime = Integer.MAX_VALUE;
+        Integer minFinishTime = Integer.MAX_VALUE;
         for(Task t : tasks) {
             for(Map.Entry<Cloud, Integer> entry : ETM.row(t.getTaskId()).entrySet()) {
                 Cloud entryCloud = entry.getKey();
-                Integer entryTime = entry.getValue();
-                //Integer exTime = type == AppType.BEST_EFFORT ? entryCloud.getEAT() + (int)entryCloud.getFeedbackFactor()*entryTime : entryTime;
-                Integer exTime = entryCloud.getEAT() + (int)((entryCloud.getFeedbackFactor() + 1)*entryTime);
-                if(exTime < minExecutionTime) {
+                Integer entryExecutionTime = entry.getValue();
+                Integer finishTime = type == AppType.BEST_EFFORT ? entryCloud.getEAT() + (int)((entryCloud.getFeedbackFactor() + 1)*entryExecutionTime) : entryExecutionTime;
+                if(finishTime < minFinishTime) {
                     cloud = entryCloud;
-                    executionTime = entryTime;
-                    minExecutionTime = exTime;
+                    executionTime = entryExecutionTime;
+                    minFinishTime = finishTime;
                     task = t;
                 }
             }
         }
-        tasks.remove(task);
         task.setExecutionTime(executionTime);
         task.setCloud(cloud);
         cloud.setEAT(cloud.getEAT() + executionTime);
@@ -128,5 +126,6 @@ public class CloudManager {
         else {
             cloud.getArTasks().add(task);
         }
+        tasks.remove(task);
     }
 }
